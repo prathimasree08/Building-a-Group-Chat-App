@@ -11,10 +11,12 @@ app.use(cors({
 }));
 app.use(bodyParser.json({ extended: false }));
 
-const userRoutes = require('./Routes/signup')
+const signupRoute = require('./Routes/signup');
+const loginRoute = require('./Routes/login');
 
 
-app.use(userRoutes);
+app.use(signupRoute);
+app.use(loginRoute);
 
 
 sequelize
