@@ -19,6 +19,8 @@ app.use(signupRoute);
 app.use(loginRoute);
 
 
+
+
 sequelize
 // .sync({force: true})
 .sync()
