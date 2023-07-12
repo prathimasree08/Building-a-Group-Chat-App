@@ -13,10 +13,19 @@ app.use(bodyParser.json({ extended: false }));
 
 const signupRoute = require('./Routes/signup');
 const loginRoute = require('./Routes/login');
+const chatRoute = require('./Routes/chat')
+
+const User = require('./Models/user');
+const Chat = require('./Models/chats')
 
 
 app.use(signupRoute);
 app.use(loginRoute);
+app.use(chatRoute)
+
+
+User.hasMany(Chat);
+Chat.belongsTo(User)
 
 
 
