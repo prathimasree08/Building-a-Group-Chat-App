@@ -14,4 +14,9 @@ router.post(
     userAuthenticate.authenticate, 
     chatController.postChat);
 
+router.get(
+    "/chat/chats", 
+    userAuthenticate.authenticate, 
+    chatController.getChat)
+
 module.exports = router;
