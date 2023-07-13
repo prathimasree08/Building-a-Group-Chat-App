@@ -60,7 +60,7 @@ async function sendChat(e){
         });
         console.log(response.data)
         showchats(response.data)
-        // chatRefresh();
+        chatRefresh();
         chatMsg.value ='';
         chatBox.scrollTop = chatBox.scrollHeight;
     }catch (err){

@@ -41,7 +41,8 @@ exports.getUsers = async (req, res, next) => {
       const results = await sequelize.query(
         `SELECT userchats.message, users.name
          FROM userchats
-         JOIN users ON userchats.userId = users.id`
+         JOIN users ON userchats.userId = users.id
+         ORDER BY userchats.id ASC`
       );
     //   console.log(JSON.stringify(results[0], null, 2));
       return res.json(results[0]);
