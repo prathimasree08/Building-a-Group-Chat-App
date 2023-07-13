@@ -13,19 +13,29 @@ app.use(bodyParser.json({ extended: false }));
 
 const signupRoute = require('./Routes/signup');
 const loginRoute = require('./Routes/login');
-const chatRoute = require('./Routes/chat')
+const chatRoute = require('./Routes/chat');
+const groupRoutes = require('./Routes/group');
 
 const User = require('./Models/user');
-const Chat = require('./Models/chats')
+const Chat = require('./Models/chats');
+const Group = require('./Models/group');
+const UserGroups = require('./Models/groupUser');
 
 
 app.use(signupRoute);
 app.use(loginRoute);
 app.use(chatRoute)
+app.use(groupRoutes);
 
 
-User.hasMany(Chat);
-Chat.belongsTo(User)
+User.belongsToMany(Group, { through: UserGroups, foreignKey: 'userId' });
+Group.belongsToMany(User, { through: UserGroups, foreignKey: 'groupId' });
+
+Group.hasMany(Chat, { foreignKey: 'groupId' });
+Chat.belongsTo(Group, { foreignKey: 'groupId' });
+
+User.hasMany(Chat, { foreignKey: 'userId' });
+Chat.belongsTo(User, { foreignKey: 'userId' });
 
 
 
