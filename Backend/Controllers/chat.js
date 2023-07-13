@@ -1,6 +1,8 @@
 const User = require('../Models/user');
 const Chat = require('../Models/chats')
 const sequelize = require('../Util/database');
+const { QueryTypes } = require('sequelize');
+
 
 exports.getUsers = async (req, res, next) => {
     try {
@@ -11,7 +13,6 @@ exports.getUsers = async (req, res, next) => {
       return res.status(500).json({ error: 'Error getting users' });
     }
   }
-
   exports.postChat = async (req, res, next) => {
     const msg = req.body.message;
     console.log(msg);
@@ -49,3 +50,26 @@ exports.getUsers = async (req, res, next) => {
       return res.status(500).json({ error: 'Error getting chat' });
     }
   }
+
+
+  let lastMessageId = 0;
+
+exports.getNewChat = async (req, res, next) => {
+  try {
+    const query = `SELECT userchats.id, userchats.message, users.name
+                   FROM userchats
+                   JOIN users ON userchats.userId = users.id
+                   WHERE userchats.id > ?
+                   ORDER BY userchats.id `;
+    const results = await sequelize.query(query, { replacements: [lastMessageId], type: QueryTypes.SELECT });
+
+    if (results.length > 0) {
+      lastMessageId = results[results.length - 1].id; 
+    }
+    console.log(results)
+    return res.json(results);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: 'Error getting chat' });
+  }
+};

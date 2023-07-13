@@ -16,6 +16,8 @@ window.addEventListener("DOMContentLoaded", async () => {
     chats.data.forEach((chat) => {
       showchats(chat);
     });
+    chatBox.scrollTop = chatBox.scrollHeight;
+    chatRefresh()
 
   } catch (err) {
     console.error(err);
@@ -23,6 +25,21 @@ window.addEventListener("DOMContentLoaded", async () => {
 });
 addBtn.addEventListener('click', addNewGroup);
 sendBtn.addEventListener('click', sendChat)
+
+async function chatRefresh(){
+  try{
+    setInterval(async ()=>{
+      const chats = await axios.get(`http://localhost:3000/chat/newchats`, { headers: {"Authorization" : token }});
+    console.log(chats)
+    chats.data.forEach((chat) => {
+      showchats(chat);
+    });
+    },5000)
+  }catch(err){
+    console.log(err)
+  }
+}
+
 function addNewGroup(e){
     e.preventDefault()
     const newgroup = {
@@ -41,9 +58,11 @@ async function sendChat(e){
                 "Authorization" : token 
             }
         });
-        // console.log(response.data)
+        console.log(response.data)
         showchats(response.data)
+        // chatRefresh();
         chatMsg.value ='';
+        chatBox.scrollTop = chatBox.scrollHeight;
     }catch (err){
         console.log(err)
     }

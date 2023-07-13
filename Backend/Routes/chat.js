@@ -19,4 +19,9 @@ router.get(
     userAuthenticate.authenticate, 
     chatController.getChat)
 
+router.get(
+    "/chat/newchats", 
+    userAuthenticate.authenticate, 
+    chatController.getNewChat)
+
 module.exports = router;
