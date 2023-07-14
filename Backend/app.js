@@ -1,19 +1,16 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const bodyParser = require('body-parser');
 const sequelize = require('./Util/database')
 var cors = require('cors');
 
 const app = express();
-app.use(cors({
-    origin:"http://127.0.0.1:5500",
-    credentials: true,
-}));
+app.use(cors());
 app.use(bodyParser.json({ extended: false }));
 
-const signupRoute = require('./Routes/signup');
-const loginRoute = require('./Routes/login');
-const chatRoute = require('./Routes/chat');
+const userRoutes = require('./Routes/user');
+const chatRoutes = require('./Routes/chat');
 const groupRoutes = require('./Routes/group');
 
 const User = require('./Models/user');
@@ -21,11 +18,9 @@ const Chat = require('./Models/chats');
 const Group = require('./Models/group');
 const UserGroups = require('./Models/groupUser');
 
-
-app.use(signupRoute);
-app.use(loginRoute);
-app.use(chatRoute)
-app.use(groupRoutes);
+app.use('/user', userRoutes);
+app.use('/chat', chatRoutes);
+app.use('/group', groupRoutes);
 
 
 User.belongsToMany(Group, { through: UserGroups, foreignKey: 'userId' });
@@ -38,14 +33,12 @@ User.hasMany(Chat, { foreignKey: 'userId' });
 Chat.belongsTo(User, { foreignKey: 'userId' });
 
 
-
-
 sequelize
 // .sync({force: true})
 .sync()
 .then(result =>{
     // console.log(result);
-    app.listen(process.env.PORT || 3000);
+    app.listen(process.env.PORT || 4000);
 })
 .catch(err =>{
     console.log(err);

@@ -16,17 +16,16 @@ async function onSubmit(e){
                 mobile: mobileInput.value,
                 password: passwordInput.value
             }
-            const response = await axios.post('http://localhost:3000/user/signup', newuser)
+            const response = await axios.post('http://localhost:4000/user/signup', newuser)
             console.log(response)
             if(response.status === 200){
-                alert("succesfully signed up")
+                alert("Successfuly signed up.")
                 window.location.href = "../Login/login.html"
             }else{
                 throw new Error('Failed to login')
             }
         } catch(err) {
         // console.log(err)
-        
         msg.classList.add('warning');
         msg.textContent = err.response.data.error;
         setTimeout(() => msg.remove(), 3000);

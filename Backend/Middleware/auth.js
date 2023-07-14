@@ -4,7 +4,6 @@ const User = require('../Models/user');
 const authenticate = (req, res, next) =>{
     try{
         const token = req.header('Authorization');
-
         const user = jwt.verify(token, 'secretkey');
         const UserId = user.userId;
         // console.log('userid>>>',UserId)
@@ -15,7 +14,6 @@ const authenticate = (req, res, next) =>{
         .catch(err =>{
             throw new Error(err)
         })
-        
     } catch (err) {
         return res.status(500).json({ error: 'Internal server error' });
     }
